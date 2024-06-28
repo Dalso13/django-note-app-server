@@ -73,10 +73,14 @@ WSGI_APPLICATION = 'note_server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 env = Env()
+env_path = BASE_DIR / "db.env"
+if env_path.exists():
+    with env_path.open("rt", encoding="utf-8") as f:
+        env.read_env(f, overwrite=True)
 
 DB_NAME = env.str("DB_NAME")
 DB_USER = env.str("DB_USER")
-DB_PASSWORD = env.int("DB_PASSWORD")
+DB_PASSWORD = env.str("DB_PASSWORD")
 
 DATABASES = {
     'default': {
@@ -85,6 +89,7 @@ DATABASES = {
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
         'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

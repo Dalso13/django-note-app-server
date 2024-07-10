@@ -5,5 +5,5 @@ from django.db import models
 class Note(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
-    hexColor = models.IntegerField()
+    hexColor = models.BigIntegerField()
     datetime = models.DateTimeField(auto_now=True)

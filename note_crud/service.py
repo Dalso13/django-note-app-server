@@ -9,8 +9,9 @@ class NoteService(ABC):
     def create(self, title, content, hexColor):
         pass
 
+
     @abstractmethod
-    def read(self, id):
+    def readAll(self):
         pass
 
     @abstractmethod
@@ -23,21 +24,35 @@ class NoteService(ABC):
 
 
 class NoteServiceEx(NoteService):
-    def __init__(self):
-        self.note = Note()
 
     def create(self, title: str, content: str, hexColor: int):
-        self.note.objects.create(
+        Note.objects.create(
             title=title,
             content=content,
             hexColor=hexColor,
         )
 
-    def read(self, id: int):
-        return NoteSerializer(self.note.objects.get(id=id)).data
+    def readAll(self):
+        try:
+            return NoteSerializer(Note.objects.all(), many=True).data
+        except Exception as e:
+            print(e)
+            return False
 
     def update(self, id, title, content, hexColor):
-        self.note.objects.filter(id=id).update(title=title, content=content, hexColor=hexColor)
+        try:
+            model = Note.objects.filter(id=id)
+            data = model.update(title=title, content=content, hexColor=hexColor)
+            print(data)
+        except Exception as e:
+            print(e)
+            return False
 
     def delete(self, id):
-        return self.note.objects.filter(id=id).delete()
+        try:
+            model = Note.objects.filter(id=id)
+            data = model.delete()
+            print(data)
+        except Exception as e:
+            print(e)
+            return False

@@ -17,6 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.urls import path
+from note_crud import views
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', views.index, name='index'),
+    path('create/', views.create),
+    path('readAll/', views.readAll),
+    path('update/', views.update),
+    path('delete/', views.delete),
 ]

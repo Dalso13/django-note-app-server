@@ -13,8 +13,15 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from environ import Env
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = Env()
+env_path = BASE_DIR / "db.env"
+if env_path.exists():
+    with env_path.open("rt", encoding="utf-8") as f:
+        env.read_env(f, overwrite=True)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -25,7 +32,10 @@ SECRET_KEY = 'django-insecure-h-zgtq(pf1b(fd_jkyz_hp^cj#mt6&hlmg_afz)c!!&(jl3s@c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+HOST = env.str("HOST")
+MOBILE_HOST = env.str("MOBILE_HOST")
+
+ALLOWED_HOSTS = [HOST, MOBILE_HOST]
 
 # Application definition
 
@@ -72,11 +82,6 @@ WSGI_APPLICATION = 'note_server.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-env = Env()
-env_path = BASE_DIR / "db.env"
-if env_path.exists():
-    with env_path.open("rt", encoding="utf-8") as f:
-        env.read_env(f, overwrite=True)
 
 DB_NAME = env.str("DB_NAME")
 DB_USER = env.str("DB_USER")
